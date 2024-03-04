@@ -1,4 +1,6 @@
 .vscode/
+.cache/
 build/
 protocols/*.h
 protocols/*.c
+compile_commands.json

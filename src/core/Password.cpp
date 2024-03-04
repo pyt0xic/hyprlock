@@ -2,6 +2,7 @@
 #include "hyprlock.hpp"
 #include "../helpers/Log.hpp"
 
+#include <security/_pam_types.h>
 #include <unistd.h>
 #include <security/pam_appl.h>
 #if __has_include(<security/pam_misc.h>)
@@ -48,6 +49,7 @@ std::shared_ptr<CPassword::SVerificationResult> CPassword::verify(const std::str
             ret                 = pam_authenticate(handle, 0);
 
             if (ret != PAM_SUCCESS) {
+                Debug::log(ERR, "auth: pam error {}", pam_strerror(handle, ret));
                 result->success    = false;
                 result->failReason = ret == PAM_AUTH_ERR ? "Authentication failed" : "pam_authenticate failed";
                 Debug::log(ERR, "auth: {} for {}", result->failReason, auth);
